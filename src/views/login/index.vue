@@ -15,7 +15,7 @@
 
   effect(() => {
     console.log('effect', videoPlayer.value, videoAddress.value);
-    if (videoPlayer.value) {
+    if (videoPlayer.value && videoAddress.value) {
       // 这里添加类型断言，告诉TypeScript videojs期望的第一个参数类型
       videojs(
         videoPlayer.value,
