@@ -1,28 +1,42 @@
 <template>
   <div class="container">
-    <div class="logo">
-      <img
-        alt="logo"
-        src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/dfdba5317c0c20ce20e64fac803d52bc.svg~tplv-49unhts6dw-image.image"
-      />
-      <div class="logo-text">Arco Design Pro</div>
-    </div>
-    <LoginBanner />
-    <div class="content">
-      <div class="content-inner">
-        <LoginForm />
-      </div>
-      <div class="footer">
-        <Footer />
-      </div>
-    </div>
+    <video ref="videoPlayer" class="video-js"></video>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import Footer from '@/components/footer/index.vue';
-  import LoginBanner from './components/banner.vue';
-  import LoginForm from './components/login-form.vue';
+  import 'video.js/dist/video-js.css';
+  import videojs from 'video.js';
+  import { onMounted, onBeforeUnmount, ref, effect } from 'vue';
+
+  const videoAddress = ref<string>('');
+
+  const videoPlayer = ref(null);
+
+  effect(() => {
+    console.log('effect', videoPlayer.value, videoAddress.value);
+    if (videoPlayer.value) {
+      // 这里添加类型断言，告诉TypeScript videojs期望的第一个参数类型
+      videojs(
+        videoPlayer.value,
+        {
+          autoplay: true,
+          controls: true,
+          sources: [
+            {
+              src: videoAddress.value,
+            },
+          ],
+        },
+        () => {}
+      );
+    }
+  }, [videoPlayer.value,videoAddress.value]);
+
+  const getVideoInfo = () => {
+    videoAddress.value = 'https://play.xluuss.com/play/Qe1JAxja/index.m3u8';
+  };
+  getVideoInfo();
 </script>
 
 <style lang="less" scoped>
